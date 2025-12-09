@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thabo N.M. Moyo | Blog</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    /* Additional styles for blog page */
+    .blog-header {
+      text-align: center;
+      margin: 3rem 0 2rem;
+    }
+    .blog-posts {
+      max-width: 900px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+    }
+    .post-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: #fafafa;
+      transition: box-shadow 0.3s ease;
+    }
+    .post-card:hover {
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    .post-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.6rem;
+      color: #222;
+    }
+    .post-meta {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+    .post-excerpt {
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+   .read-more {
+  position: relative;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding-bottom: 2px; /* space for the progress line */
+}
+
+.read-more::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #0056b3;
+  transition: width 0.4s ease;
+}
+
+.read-more:hover::after {
+  width: 100%;
+}
+
+.read-more:hover {
+  text-decoration: none; /* remove underline to focus on line */
+}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav>
+      <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html" aria-current="page">Blog</a></li>
+        <li><a href="https://github.com/Nkosinqobile" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="blog-header">
+    <h1>Blog</h1>
+    <p>Insights and updates on IT Support, Microsoft Endpoint Management, and more.</p>
+  </section>
+
+  <section class="blog-posts">
+    <article class="post-card">
+      <h2 class="post-title">Getting Started with Microsoft Endpoint Manager</h2>
+      <div class="post-meta">Published on October 5, 2025</div>
+      <p class="post-excerpt">
+        An introductory guide to Microsoft Endpoint Manager and how to leverage its features for seamless device management in your organization.
+      </p>
+      <a href="#" class="read-more">Read more →</a>
+    </article>
+
+    <article class="post-card">
+      <h2 class="post-title">Building Hybrid Labs for IT Training</h2>
+      <div class="post-meta">Published on September 20, 2025</div>
+      <p class="post-excerpt">
+        Discover the benefits of hybrid labs and how to design them for effective hands-on learning in IT environments.
+      </p>
+      <a href="#" class="read-more">Read more →</a>
+    </article>
+
+    <article class="post-card">
+      <h2 class="post-title">Introduction to pfSense for Network Security</h2>
+      <div class="post-meta">Published on August 15, 2025</div>
+      <p class="post-excerpt">
+        Learn the basics of pfSense, an open-source firewall/router solution, and how it can enhance your network security.
+      </p>
+      <a href="#" class="read-more">Read more →</a>
+    </article>
+
+    <!-- Add more post-card blocks as needed -->
+  </section>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
