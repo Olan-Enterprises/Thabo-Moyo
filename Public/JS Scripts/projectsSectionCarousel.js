@@ -1,15 +1,18 @@
-/////////////////////////////////////////////////
+///////////////////////////////////////////////
 // Card Slider Logic
 /////////////////////////////////////////////////
 
 const slider = document.getElementById("projects_section_cards");
 const prevBtn = document.getElementById("projects_section_nav_btn_prev");
 const nextBtn = document.getElementById("projects_section_nav_btn_next");
-const card = slider.querySelector(".projects_section_card");
+const cards = slider.querySelectorAll(".projects_section_card");
+
+// NEW: autoplay progress bar elements
+const autoplayProgressBar = document.getElementById("projects_section_autoscroll_progress");
 
 function GetCardWidth() {
-    const cardStyles = window.getComputedStyle(card);
-    const cardWidth = card.offsetWidth;
+    const cardStyles = window.getComputedStyle(cards[0]);
+    const cardWidth = cards[0].offsetWidth;
     const marginRight = parseInt(cardStyles.marginRight);
     const marginLeft = parseInt(cardStyles.marginLeft);
 
@@ -42,7 +45,7 @@ nextBtn.addEventListener("mousedown", () => {
     button.addEventListener("mousedown", (event) => {
         if(!event.isTrusted) return; // Ignore synthetic events triggered by AutoScrollStep
 
-        PauseAutoScrollFor(autoScrollPauseDelay);
+        PauseAutoScroll(autoScrollPauseDelay1);
     });
 });
 
@@ -68,13 +71,61 @@ function UpdateScrollbar() {
 /////////////////////////////////////////////////
 
 const autoScrollInterval = 3000;
-const autoScrollPauseDelay = 10000;
+const autoScrollPauseDelay1 = 10000; // Used when nav buttons are clicked
+const autoScrollPauseDelay2 = 5000; // Used when card is hovered over
 let autoScrollDirection = "right";
 let autoScrollIntervalId = null;
 let autoScrollResumeTimeoutId = null;
 
+// NEW: progress-bar state
+let autoScrollProgressAnimationId = null;
+let autoScrollProgressStartTime = null;
+let autoScrollProgressDuration = null;
+
+// Helpers
 const AtRightEnd = () => { return Math.ceil(slider.scrollLeft + slider.clientWidth) >= slider.scrollWidth; }
-const AtLeftEnd = () => { return slider.scrollLeft <= 0; }
+const AtLeftEnd  = () => { return slider.scrollLeft <= 0; }
+
+// NEW: progress bar helpers
+function ResetAutoScrollProgressBar() {
+    if (!autoplayProgressBar) return;
+
+    if (autoScrollProgressAnimationId !== null) {
+        cancelAnimationFrame(autoScrollProgressAnimationId);
+        autoScrollProgressAnimationId = null;
+    }
+
+    autoplayProgressBar.style.width = "0%";
+
+    autoScrollProgressStartTime = null;
+    autoScrollProgressDuration = null;
+}
+
+function StartAutoScrollProgressBar(duration) {
+    if (!autoplayProgressBar) return;
+
+    ResetAutoScrollProgressBar();
+
+    autoScrollProgressStartTime = performance.now();
+    autoScrollProgressDuration = duration;
+
+    const Step = () => {
+        if (!autoScrollProgressStartTime || !autoScrollProgressDuration) return;
+
+        const elapsed = performance.now() - autoScrollProgressStartTime;
+        const clamped = Math.min(Math.max(elapsed / autoScrollProgressDuration, 0), 1);
+
+        autoplayProgressBar.style.width = `${clamped * 100}%`;
+
+        if (clamped < 1) {
+            autoScrollProgressAnimationId = requestAnimationFrame(Step);
+        } else {
+            autoScrollProgressAnimationId = null;
+        }
+    };
+
+    autoScrollProgressAnimationId = requestAnimationFrame(Step);
+}
 
 function AutoScrollStep() {
     if(autoScrollDirection === "right") {
@@ -105,25 +156,41 @@ function AutoScrollStep() {
 function StartAutoScroll() {
     if(autoScrollIntervalId !== null) return;
 
+    // When autoplay is running, we don't need the progress bar
+    ResetAutoScrollProgressBar();
+
     autoScrollIntervalId = setInterval(AutoScrollStep, autoScrollInterval);
 }
 
 function StopAutoScroll() {
     if(autoScrollIntervalId !== null) {
         clearInterval(autoScrollIntervalId);
-
         autoScrollIntervalId = null;
     }
 }
 
-function PauseAutoScrollFor(duration) {
+function PauseAutoScroll(duration) {
     StopAutoScroll();
 
-    if(autoScrollResumeTimeoutId !== null) clearTimeout(autoScrollResumeTimeoutId);
+    if(autoScrollResumeTimeoutId !== null) {
+        clearTimeout(autoScrollResumeTimeoutId);
+        autoScrollResumeTimeoutId = null;
+    }
 
-    autoScrollResumeTimeoutId = setTimeout(() => { StartAutoScroll() }, duration);
+    // NEW: kick off the visual countdown bar
+    StartAutoScrollProgressBar(duration);
+
+    autoScrollResumeTimeoutId = setTimeout(() => {
+        StartAutoScroll();
+    }, duration);
 }
 
+// Hover pause → short countdown
+cards.forEach(card => {
+    card.addEventListener("mouseover", () => PauseAutoScroll(autoScrollPauseDelay2));
+});
+
+// Scrollbar + init
 slider.addEventListener("scroll", UpdateScrollbar);
 window.addEventListener("resize", UpdateScrollbar);
 

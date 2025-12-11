@@ -1,84 +1,57 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const heroSection = document.getElementById("home_hero_section");
-    if (!heroSection) return;
+const heroSection = document.getElementById("home_hero_section");
+const bgImages = document.querySelectorAll(".home_hero_section_background img");
+const slideDuration = 6000;
+const maxParallax = 300;
+let currentIndex = 0;
+let targetTranslate = 0;
+let currentTranslate = 0;
 
-    const bgImages = heroSection.querySelectorAll(".home_hero_section_background img");
-    if (!bgImages.length) return;
+function ShowFirstSlideInstant() {
+    bgImages.forEach((img, i) => {
+        img.style.transition = "none";
+        img.classList.toggle("active", i === 0);
+    });
 
-    /* ---------------- SLIDESHOW (no fade on first load) --------------------- */
+    void heroSection.offsetHeight;
 
-    let currentIndex = 0;
-    const slideDuration = 6000; // ms per image
+    bgImages.forEach(img => img.style.transition = "");
+}
 
-    // 1) Show first slide immediately WITHOUT transition
-    function showFirstSlideInstant() {
-        // Temporarily disable opacity transition
-        bgImages.forEach(img => {
-            img.style.transition = "none";
-        });
+const ShowSlide = (index) => { bgImages.forEach((img, i) => img.classList.toggle("active", i === index)) }
 
-        // Mark only the first image as active
-        bgImages.forEach((img, i) => {
-            img.classList.toggle("active", i === 0);
-        });
+function StartSlideshow() {
+    ShowFirstSlideInstant();
 
-        // Force a reflow so the browser applies the styles
-        // (this "locks in" the first state with no animation)
-        void heroSection.offsetHeight;
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % bgImages.length;
 
-        // Re-enable the CSS transition for future fades
-        bgImages.forEach(img => {
-            img.style.transition = ""; // clears inline style, uses CSS rule again
-        });
-    }
+        ShowSlide(currentIndex);
+    }, slideDuration);
+}
 
-    function showSlide(index) {
-        bgImages.forEach((img, i) => {
-            img.classList.toggle("active", i === index);
-        });
-    }
+function UpdateTargetFromScroll() {
+    const rect = heroSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-    function startSlideshow() {
-        showFirstSlideInstant(); // first image appears instantly
+    if(rect.bottom < 0 || rect.top > viewportHeight) return;
 
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % bgImages.length;
-            showSlide(currentIndex); // later slides will fade because transition is back
-        }, slideDuration);
-    }
+    const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+    const clamped = Math.max(0, Math.min(1, progress));
 
-    /* ---------------- PARALLAX (unchanged) --------------------------------- */
+    targetTranslate = (clamped - 0.5) * -maxParallax;
+}
 
-    let targetTranslate = 0;
-    let currentTranslate = 0;
-    const maxParallax = 300;
+function AnimateParallax() {
+    currentTranslate += (targetTranslate - currentTranslate) * 0.08;
 
-    function updateTargetFromScroll() {
-        const rect = heroSection.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    bgImages.forEach(img => img.style.transform = `translateY(${currentTranslate}px)`);
 
-        if (rect.bottom < 0 || rect.top > viewportHeight) return;
+    requestAnimationFrame(AnimateParallax);
+}
 
-        const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
-        const clamped = Math.max(0, Math.min(1, progress));
+window.addEventListener("scroll", UpdateTargetFromScroll, { passive: true });
+window.addEventListener("resize", UpdateTargetFromScroll);
 
-        targetTranslate = (clamped - 0.5) * -maxParallax;
-    }
-
-    function animateParallax() {
-        currentTranslate += (targetTranslate - currentTranslate) * 0.08;
-
-        bgImages.forEach(img => {
-            img.style.transform = `translateY(${currentTranslate}px)`;
-        });
-
-        requestAnimationFrame(animateParallax);
-    }
-
-    window.addEventListener("scroll", updateTargetFromScroll, { passive: true });
-    window.addEventListener("resize", updateTargetFromScroll);
-
-    updateTargetFromScroll();
-    animateParallax();
-    startSlideshow();
-});
+UpdateTargetFromScroll();
+AnimateParallax();
+StartSlideshow();

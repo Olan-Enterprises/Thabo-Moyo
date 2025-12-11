@@ -1,7 +1,0 @@
-https://www.makoitlab.com/
-https://www.cheitgroup.com/
-https://ellis.digital/
-https://www.getnauta.com/
-
-To Do:
-- Add an infinite scroller below the project cards with massive words.
