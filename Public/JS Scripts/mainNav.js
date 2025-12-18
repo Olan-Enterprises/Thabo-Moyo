@@ -33,8 +33,14 @@ const navLinks = Array.from(document.querySelector(".main_top_nav_right_links").
 
 const MakeActive = (navElement) => {
     navLinks.forEach(link => link.classList.remove("active"));
+    document.querySelectorAll(".main_top_nav_right_link_active").forEach(element => element.style.opacity = "0");
 
     navElement.classList.add("active");
+
+    if(navElement.classList.contains("active")) {
+        navElement.querySelector(".main_top_nav_right_link_active").style.opacity = "1";
+        navElement.querySelector(".main_top_nav_right_link_active").style.transition = "opacity 0.7s ease";
+    }
 }
 
 const navObserver = new IntersectionObserver(entries => {
@@ -48,3 +54,66 @@ const navObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.5 });
 
 mainSections.forEach(section => navObserver.observe(section));
+
+////////////////////////////////////////////////////////
+// Nav sidebar logic
+////////////////////////////////////////////////////////
+
+const hamburgerIcon = document.getElementById("main_top_nav_hamburger_icon");
+const sidebar = document.getElementById("main_top_nav_sidebar");
+const sidebarLinks = sidebar.querySelectorAll(".main_top_nav_sidebar_link");
+
+let sidebarHiddenRight = "0px";
+let sidebarOpen = false;
+
+const CalculateHiddenPosition = () => {
+  sidebarHiddenRight = `-${sidebar.getBoundingClientRect().width}px`;
+};
+
+const IsSidebarOpen = () => sidebarOpen;
+
+const OpenSidebar = () => {
+  sidebar.style.right = "0px";
+  sidebarOpen = true;
+};
+
+const CloseSidebar = () => {
+  sidebar.style.right = sidebarHiddenRight;
+  sidebarOpen = false;
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  CalculateHiddenPosition();
+  CloseSidebar();
+});
+
+hamburgerIcon.addEventListener("click", (event) => {
+  event.stopPropagation();
+  OpenSidebar();
+});
+
+// ✅ Close when clicking outside (works for mouse + touch)
+document.addEventListener("pointerdown", (event) => {
+  if (!IsSidebarOpen()) return;
+
+  // If the click is inside the sidebar or on the hamburger icon, do nothing
+  if (sidebar.contains(event.target) || hamburgerIcon.contains(event.target)) return;
+
+  CloseSidebar();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && IsSidebarOpen()) CloseSidebar();
+});
+
+sidebarLinks.forEach(link => {
+  link.addEventListener("click", () => CloseSidebar());
+});
+
+window.addEventListener("resize", () => {
+  const wasOpen = IsSidebarOpen();
+
+  CalculateHiddenPosition();
+
+  if (!wasOpen) CloseSidebar();
+});

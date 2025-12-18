@@ -379,7 +379,7 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 5rem;
+    gap: 2rem;
     position: fixed;
     top: 0;
     left: 0;
@@ -392,6 +392,96 @@ a {
     font-weight: 700;
     color: var(--secondaryAccentColour);
 }
+
+.main_top_nav_hamburger_icon {
+    height: 2.5rem;
+    padding: 0.6rem;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.main_top_nav_sidebar {
+    width: calc(100% - 5rem);
+    max-width: 30rem;
+    height: 100vh;
+    padding: 2rem 2rem 1rem;
+    position: fixed;
+    top: 0;
+    z-index: 1200;
+    background-color: rgba(16, 16, 16, 0.9);
+    backdrop-filter: blur(5px);
+    transition: right 0.3s ease;
+}
+
+.main_top_nav_sidebar_header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.main_top_nav_sidebar_header h1 {
+    font-weight: 500;
+    color: white;
+}
+
+.main_top_nav_sidebar_header_socials {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.main_top_nav_sidebar_links {
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.main_top_nav_sidebar_link {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-radius: 1rem 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.main_top_nav_sidebar_link:hover {
+    background-color: rgb(30, 30, 30);
+}
+
+.main_top_nav_sidebar_link.active {
+    box-shadow: var(--boxShadow2);
+    background-color: var(--secondaryAccentColour);
+}
+
+.main_top_nav_sidebar_link svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+}
+
+.main_top_nav_sidebar_link h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
 
 .main_top_nav_right_links_container {
     width: 100%;
@@ -414,6 +504,7 @@ a {
 
 .main_top_nav_right_link {
     padding: 0.25rem 0.75rem;
+    position: relative;
 }
 
 .main_top_nav_right_link a {
@@ -425,18 +516,24 @@ a {
 
 .main_top_nav_right_link a p {
     color: var(--paragraphTextColour);
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .main_top_nav_right_link_active {
     width: 7.25px;
     height: 7.25px;
-    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
     border-radius: 50%;
     background-color: var(--mainAccentColour);
 }
 
-.main_top_nav_right_link.active .main_top_nav_right_link_active {
-    display: block;
+.main_top_nav_right_link.active p {
+    transform: translateY(-6.5px);
+    color: var(--mainAccentColour);
 }
 
 .main_top_nav_right_contact div {
@@ -496,6 +593,10 @@ a {
     z-index: 1;
 }
 
+.home_hero_section_container_mobile_header_mobile {
+    display: none;
+}
+
 .home_hero_section_container_mobile_header {
     display: flex;
     justify-content: space-between;
@@ -512,6 +613,15 @@ a {
     align-items: center;
     gap: 1rem;
     transform: translateY(-1.25rem);
+}
+
+.home_hero_section_container_mobile_socials a svg path {
+    transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.home_hero_section_container_mobile_socials a:hover svg path {
+    fill: var(--mainAccentColour);
+    stroke: var(--mainAccentColour);
 }
 
 .home_hero_section_container_mobile_bottom_header h2 {
@@ -890,7 +1000,6 @@ a {
 }
 
 .projects_section_header_content div h1 {
-    width: 41rem;
     font-size: 2.25rem;
     font-weight: 500;
     color: var(--mainTextColour);
@@ -908,7 +1017,7 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--mainAccentColour);
+    border: 1px solid var(--secondaryAccentColour);
     border-radius: 0.35rem;
     background-color: var(--backgroundColourLight);
     cursor: pointer;
@@ -916,16 +1025,7 @@ a {
 }
 
 .projects_section_nav_btn:hover {
-    background-color: var(--mainAccentColour);
-}
-
-.projects_section_nav_btn svg {
-    fill: black;
-    transition: fill 0.3s ease;
-}
-
-.projects_section_nav_btn:hover svg {
-    fill: white;
+    background-color: var(--secondaryAccentColour);
 }
 
 .projects_section_cards {
@@ -953,7 +1053,6 @@ a {
 }
 
 .projects_section_card {
-    width: 32.5rem;
     height: 17.5rem;
     display: flex;
     flex-shrink: 0;
@@ -972,11 +1071,11 @@ a {
 }
 
 .projects_section_card:hover .projects_section_card_content_header {
-    transform: translateY(-4rem);
+    transform: translateY(-10rem);
 }
 
 .projects_section_card:hover .projects_section_card_content_desciption {
-    transform: translateY(6rem);
+    transform: translateY(10rem);
 }
 
 .projects_section_card:hover .projects_section_card_cta {
@@ -1241,9 +1340,50 @@ a {
 }
 
 .blog_section_header div h1 {
+    width: max-content;
     font-size: 2.5rem;
     font-weight: 500;
     color: var(--mainTextColour);
+}
+
+.blog_section_roadmap_container_mobile {
+    display: none;
+}
+
+.blog_section_roadmap_container_mobile_blocks {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.blog_section_roadmap_container_mobile_block {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    border-radius: 1.5rem 0;
+    box-shadow: var(--boxShadow2);
+    background-color: var(--backgroundColourDark);
+}
+
+.blog_section_roadmap_container_mobile_block h1 {
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: var(--mainTextColour);
+}
+
+.blog_section_roadmap_container_mobile_block h2 {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--paragraphTextColour);
+}
+
+.blog_section_roadmap_container_mobile_block_left, .blog_section_roadmap_container_mobile_block_right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .blog_section_roadmap_container {
@@ -1270,8 +1410,8 @@ a {
 }
 
 .blog_section_roadmap_left_block h1, .blog_section_roadmap_right_block h1 {
-    font-weight: 500;
     font-size: 1.3rem;
+    font-weight: 500;
     color: var(--mainTextColour);
 }
 
@@ -1402,8 +1542,13 @@ a {
     gap: 2rem;
 }
 
+.main_footer_bottom_left {
+    width: 100%;
+}
+
 .main_footer_bottom_left_links {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 }
 
@@ -1807,6 +1952,269 @@ a {
     }
 }
 
+@media(width < 50rem) {
+    .main_top_nav_right {
+        display: none;
+    }
+
+    .main_top_nav_hamburger_icon {
+        display: flex;
+    }
+
+    .blog_section_roadmap_container {
+        display: none;
+    }
+
+    .blog_section_roadmap_container_mobile {
+        display: block;
+    }
+}
+
+@media(width < 46.825rem) {
+    .home_section_2_slider_container {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .home_section_2_slider_container_left {
+        width: 100%;
+    }
+}
+
+@media(width < 45rem) {
+    .main_top_nav_sidebar_link h2 {
+        font-size: 1rem;
+    }
+
+    .projects_section_cards {
+        grid-template-columns: repeat(7, 25rem);
+    }
+
+    .projects_section_card_content_header h1 {
+        font-size: 1.25rem;
+    }
+}
+
+@media(width < 41.25rem) {
+    .home_section_2_top_header h2 {
+        font-size: 0.8rem;
+    }
+
+    .home_section_2_top_header h1 {
+        font-size: 1.75rem;
+    }
+
+    .projects_section_header h2 {
+        font-size: 0.8rem;
+    }
+
+    .projects_section_header div h1 {
+        font-size: 1.75rem;
+    }
+
+    .blog_section_header h2 {
+        font-size: 0.8rem;
+    }
+
+    .blog_section_header div h1 {
+        font-size: 1.75rem;
+    }
+
+    .blog_section_roadmap_container_mobile_block {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    .blog_section_roadmap_container_mobile_block .main_button {
+        width: 100%;
+    }
+
+    .main_footer h1 {
+        font-size: 1.75rem;
+    }
+}
+
+@media(width < 40rem) {
+    .home_hero_section_container_mobile_header {
+        flex-direction: column;
+        align-items: baseline;
+    }
+
+    .home_hero_section_container_mobile_header_proper {
+        display: none;
+    }
+
+    .home_hero_section_container_mobile_header_mobile {
+        display: block;
+    }
+
+    .home_hero_section_container_mobile_header div h1 {
+        font-size: 2rem;
+    }
+
+    .home_hero_section_container_mobile_socials {
+        margin-top: 3rem;
+    }
+
+    .home_hero_section_right_header_auto_type_2 {
+        font-size: 1.5rem;
+    }
+
+    .home_hero_section_background {
+        height: 27rem;
+    }
+
+    .main_footer_bottom_left_links {
+        justify-content: center;
+    }
+}
+
+@media(width < 37.5rem) {
+    .projects_section_cards {
+        grid-template-columns: repeat(7, 20rem);
+    }
+}
+
+@media(width < 35.4375rem) {
+    .home_hero_section_background {
+        height: 27.75rem;
+    }
+
+    .home_section_2_top_header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .home_section_2_top_header h1 {
+        font-size: 1.25rem;
+    }
+
+    .projects_section_slider_container {
+        padding: 1rem;
+    }
+
+    .projects_section_header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .projects_section_header div h1 {
+        font-size: 1.25rem;
+    }
+
+    .projects_section_nav_btns {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .projects_section_nav_btn {
+        width: 100%;
+    }
+
+    .projects_section_cards {
+        grid-template-columns: repeat(7, 15rem);
+    }
+
+    .projects_section_card_content_desciption p {
+        font-size: 0.7rem;
+    }
+
+    .projects_section_card_content_header_pill p {
+        font-weight: 500;
+        font-size: 0.5rem;
+    }
+
+    .projects_section_slider .main_button {
+        width: 100%;
+    }
+
+    .blog_section_container {
+        padding: 3rem 1rem;
+    }
+
+    .blog_section_header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .blog_section_header div h1 {
+        font-size: 1.25rem;
+    }
+
+    .blog_section_roadmap_container_mobile_block h1 {
+        font-size: 1.1rem;
+    }
+
+    .blog_section_roadmap_container_mobile_block_left_header h2 {
+        font-size: 0.9rem;
+    }
+
+    .blog_section_roadmap_container_mobile_block_right p {
+        font-size: 0.7rem;
+    }
+
+    .main_footer_top {
+        padding: 3rem 1.5rem;
+    }
+
+    .main_footer_top_header h1 {
+        font-size: 1.25rem;
+    }
+
+    .main_footer_bottom_right h1 {
+        font-size: 1.25rem;
+    }
+}
+
+@media(width < 34.375rem) {
+    .home_section_2_top_container {
+        padding: 6rem 1.5rem 3rem 1.5rem;
+    }
+
+    .home_section_2_bottom {
+        padding: 0;
+    }
+
+    .home_section_2_bottom_card {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+}
+
+@media(width < 29.0625rem) {
+    .home_hero_section_background {
+        height: 33.5rem;
+    }
+
+    .projects_section_cards {
+        grid-template-columns: repeat(7, 14rem);
+    }
+
+    .projects_section_card_content_header {
+        gap: 0.5rem;
+    }
+
+    .projects_section_card_content_header h1 {
+        font-size: 1rem;
+    }
+}
+
+@media(width < 25rem) {
+    .main_top_nav_sidebar_header h1 {
+        font-size: 1.5rem;
+    }
+
+    .home_hero_section_container_mobile_content p {
+        font-size: 0.7rem;
+    }
+}
+
 @media(prefers-reduced-motion: off) {
     .hidden {
         transition: none;
@@ -1822,7 +2230,7 @@ a {
         --paragraphTextColour: rgba(229, 231, 235, 0.9);
         --thinBorderColour: rgba(148, 163, 184, 0.25);
         --mainBorderColour: rgba(148, 163, 184, 0.7);
-        --mainAccentColour: #38bdf8;
+        --mainAccentColour: #0c7eff;
         color-scheme: dark;
 
         .settings_drawer_close {
@@ -1841,16 +2249,12 @@ a {
             fill: white;
         }
 
-        .main_top_nav_right_links {
-            border: 1px solid rgb(71, 71, 71);
-        }
-
-        .projects_section_nav_btn svg {
+        .main_top_nav_hamburger_icon svg {
             fill: white;
         }
 
-        .projects_section_nav_btn:hover svg {
-            fill: black;
+        .main_top_nav_right_links {
+            border: 1px solid rgb(71, 71, 71);
         }
 
         .settings_drawer_setting_drawer_setting:hover {
@@ -1908,6 +2312,11 @@ html[data-theme="light"] {
 
     .settings_drawer_settings {
         border-top: 1px solid rgb(220, 220, 220);
+    }
+
+    
+    .main_top_nav_hamburger_icon svg {
+        fill: black;
     }
 
     .projects_section_nav_btn svg {
@@ -1976,6 +2385,11 @@ html[data-theme="dark"] {
     }
 
     .settings_drawer_setting_label svg {
+        fill: white;
+    }
+
+    
+    .main_top_nav_hamburger_icon svg {
         fill: white;
     }
 

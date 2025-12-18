@@ -72,21 +72,17 @@ function UpdateScrollbar() {
 
 const autoScrollInterval = 3000;
 const autoScrollPauseDelay1 = 10000; // Used when nav buttons are clicked
-const autoScrollPauseDelay2 = 5000; // Used when card is hovered over
+const autoScrollPauseDelay2 = 3000; // Used when card is hovered over
 let autoScrollDirection = "right";
 let autoScrollIntervalId = null;
 let autoScrollResumeTimeoutId = null;
-
-// NEW: progress-bar state
 let autoScrollProgressAnimationId = null;
 let autoScrollProgressStartTime = null;
 let autoScrollProgressDuration = null;
 
-// Helpers
 const AtRightEnd = () => { return Math.ceil(slider.scrollLeft + slider.clientWidth) >= slider.scrollWidth; }
-const AtLeftEnd  = () => { return slider.scrollLeft <= 0; }
+const AtLeftEnd = () => { return slider.scrollLeft <= 0; }
 
-// NEW: progress bar helpers
 function ResetAutoScrollProgressBar() {
     if (!autoplayProgressBar) return;
 
@@ -178,7 +174,7 @@ function PauseAutoScroll(duration) {
     }
 
     // NEW: kick off the visual countdown bar
-    StartAutoScrollProgressBar(duration);
+    // StartAutoScrollProgressBar(duration);
 
     autoScrollResumeTimeoutId = setTimeout(() => {
         StartAutoScroll();
